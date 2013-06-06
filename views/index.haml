@@ -45,7 +45,7 @@
       $('#generate i').removeClass('icon-spin');
       $('#generate span').html('つくる');
     }
-    $('#generate').click(function(){
+    var generate = function(){
       lock();
       $.post(
         '/generate',
@@ -69,5 +69,10 @@
           unlock();
         }
       );
+    }
+    $('#generate').click(generate);
+    $('#url').bind('enterKey', generate);
+    $('#url').keyup(function(e){
+      if(e.keyCode == 13) $(this).trigger("enterKey");
     });
   });
