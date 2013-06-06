@@ -18,7 +18,7 @@ class VimCheetSheet
 
   def overlay(img_path)
     image = MiniMagick::Image.open( img_path , 'png')
-    overlay = MiniMagick::Image.open('./resources/2560x1600_transparent.png','png')
+    overlay = MiniMagick::Image.open('./resources/2560x1600_transparent_blur.png','png')
     overlay.resize "#{ image[:width] }x#{ image[:height] }!"
     puts
     result = image.composite overlay do |c|
