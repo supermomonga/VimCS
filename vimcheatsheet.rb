@@ -8,7 +8,13 @@ class VimCheetSheet
     file_name = "./img_tmp_remote/#{ Time.now.to_i }_#{ File.basename img_url }" 
     begin
       open(file_name, 'wb') do |file|
-        file.puts Net::HTTP.get_response(URI.parse(img_url)).body
+        uri = URI.parse(img_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        request = Net::HTTP::Get.new(uri.request_uri)
+        response = http.request(request)
+        file.puts response.body
       end
       overlay file_name
     rescue
