@@ -1,0 +1,73 @@
+
+
+.hero-unit.hero-unit-mini
+  %h2 Vimチートシートをつくろう（つくろう）
+  %p この広大なネットの中に、好きな壁紙からVimチートシートを作れるウェブサービスが存在するらしい…。いったいどこに存在するんだ…
+
+#alerts
+
+.row
+  .span8.offset2
+    %div
+      .input-append
+        %input.span6#url{ name: 'url', type: 'text', placeholder: 'http://your-awesome-wallpaper-url/' }
+        %button.btn.btn-primary#generate
+          %i.icon-heart
+          %span つくる
+
+
+#modal.modal.hide.fade
+  .modal-header
+    %button.close{ type: 'button', data: { dismiss: 'modal' }, aria: { hidden: 'true' } } &times;
+    %h3 すごそう
+    .modal-body
+      #wallpaper
+      %p.message クリックして保存するがよい
+    .modal-footer
+      %button.btn{ data: { dismiss: 'modal' }, aria: { hidden: 'true' } } とじる（このモーダルを）
+
+
+:javascript
+  $(function(){
+    var lock = function(){
+      $('input').addClass('uneditable-input');
+      $('#generate').addClass('disabled');
+      $('#generate i').removeClass('icon-heart');
+      $('#generate i').addClass('icon-spinner');
+      $('#generate i').addClass('icon-spin');
+      $('#generate span').html('つくってる...');
+    }
+    var unlock = function(){
+      $('input').removeClass('uneditable-input');
+      $('#generate').removeClass('disabled');
+      $('#generate i').addClass('icon-heart');
+      $('#generate i').removeClass('icon-spinner');
+      $('#generate i').removeClass('icon-spin');
+      $('#generate span').html('つくる');
+    }
+    $('#generate').click(function(){
+      lock();
+      $.post(
+        '/generate',
+        {
+          url: $('#url').val()
+        },
+        function(data){
+          data = $.parseJSON(data);
+          if(data.status == 'ok' && data.url){
+            $('#wallpaper').html('<a href="' + data.url + '" target="_blank"><img src="' + data.url + '" />');
+            $('#modal').modal();
+          }else{
+            if(data.status == 'error'){
+              if(!data.message) data.message = '不明なエラーです';
+            }else{
+              if(!data.message) data.message = 'なんかよくわかんないエラーっぽい気がする';
+            }
+            err_alert = '<div class="alert alert-error fade in"><button type="button" class="close" data-dismiss="alert">&times;</button>' + data.message +  '</div>'
+            $(err_alert).hide().appendTo('#alerts').fadeIn('slow');
+          }
+          unlock();
+        }
+      );
+    });
+  });

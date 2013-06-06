@@ -1,0 +1,41 @@
+!!!
+%html{ html_attrs('ja') }
+  %head
+    %title Vimチートシート製造機
+    -# %link(rel='stylesheet' href='css/bootstrap.min.css')
+    -# %link(rel='stylesheet' href='css/bootstrap-responsive.min.css')
+    %link(rel='stylesheet' href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css')
+    %link(rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css')
+    %script{:src => '//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'}
+    %script{:src => 'js/bootstrap.min.js'}
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand{ href: '/' } Vimチートシート製造機
+    .container
+      =yield
+
+      %hr
+      %footer
+        %p
+          画像ホスティング：<a href="http://gyazo.com/">Gyazo.com</a>
+          %br
+          チートシート画像：<a href="https://bitbucket.org/tednaleid/vim-shortcut-wallpaper">tednaleid/vim-shortcut-wallpaper</a>
+          %br
+          サイト作った人：<a href="https://twitter.com/supermomonga">@supermomonga</a>
+
+
+:css
+  body{
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+  .hero-unit{
+    padding: 20px;
+    text-align: center;
+  }
+  #modal .message{
+    padding: 10px 0;
+    text-align: center;
+  }
