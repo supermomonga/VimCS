@@ -10,8 +10,10 @@ class VimCheetSheet
       open(file_name, 'wb') do |file|
         uri = URI.parse(img_url)
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        if /^https:\/\// =~ img_url
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
         request = Net::HTTP::Get.new(uri.request_uri)
         response = http.request(request)
         file.puts response.body
